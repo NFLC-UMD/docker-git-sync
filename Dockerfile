@@ -1,8 +1,8 @@
-FROM ubuntu:16.04
-MAINTAINER Fabian Köster <fabian.koester@bringnow.com>
+FROM alpine:latest
 
 # Install runtime dependencies
-RUN export DEBIAN_FRONTEND=noninteractive && apt-get update -qq && apt-get install -qq -y --no-install-recommends git openssh-client cron
+RUN apk update && apk upgrade
+RUN apk add --no-cache bash gawk sed grep bc coreutils git openssh-client apk-cron
 
 # Install scripts
 COPY sync.sh entrypoint.sh /usr/local/bin/
