@@ -1,5 +1,4 @@
 # init-git-pull
-A docker image designed as a k8 initContainer for git pull on pod initialization.
 
 To use it, you must pass the following **environment variables**:
 
