@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
 SYNC_DIR="${SYNC_DIR:=/sync-dir}"
 
@@ -25,10 +25,6 @@ GIT_REPO_BRANCH=${GIT_REPO_BRANCH:=master}
 # Use default push behavior of Git 2.0
 git config --global push.default simple
 
-function die {
-    echo >&2 "$@"
-    exit 1
-}
 echo "$(date -R)"
 
 if [ ! -d "$SYNC_DIR" ]; then
