@@ -1,6 +1,6 @@
 # init-git-pull
 
-A docker image designed as a k8 initContainer for git pull on pod initialization. To use it, you must pass the following **environment variables**:
+A docker image designed as a k8 initContainer for git pull on pod initialization. To use it, pass the following **environment variables**:
 
 * `GIT_REPO_URL`: URL of the Git repository to sync to, for example `ssh://git@example.com/foo/bar.git`. (required)
 * `GIT_REPO_BRANCH`: Branch of the Git repository to sync to, for example `production` (defaults to `master`).
@@ -19,7 +19,7 @@ Host example.com
 ```
 3. Create ssh-appkey secret:
 ```
-kubectl create secret generic ssh-appkey 
+kubectl create secret generic ssh-appkey \
         --from-file=config=/path/to/config \
         --from-file=appkey=/path/to/appkey
 ```
