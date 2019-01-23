@@ -1,12 +1,12 @@
 # init-git-pull
 
-To use it, you must pass the following **environment variables**:
+A docker image designed as a k8 initContainer for git pull on pod initialization. To use it, you must pass the following **environment variables**:
 
 * `GIT_REPO_URL`: URL of the Git repository to sync to, for example `ssh://git@example.com/foo/bar.git`. (required)
-* `GIT_REPO_BRANCH`: Branch of the Git repository to sync to, for example `production`. Defaults to `master`.
-* `SYNC_DIR`: path to pull contents into.  Should match your mounted directory path.  (defaults to `/sync-dir`)
-* `GROUP_ID`: (defaults to 999); after clone/pull, the sync dir is chmod'd to  0:$GROUP_ID
-* `SSH_PK_ID_FILE`: name of private key file. This should be a mounted secret along with a `config` file at the same location. (defaults to `appkey`). See below.
+* `GIT_REPO_BRANCH`: Branch of the Git repository to sync to, for example `production` (defaults to `master`).
+* `SYNC_DIR`: path to pull contents into.  Should match your mounted directory path (defaults to `/sync-dir`).
+* `GROUP_ID`: (defaults to `999`); after clone/pull, the sync dir is chmod'd to  0:$GROUP_ID
+* `SSH_PK_ID_FILE`: name of private key file. This should be a mounted secret along with a `config` file at the same location (defaults to `appkey`). See below.
 
 ## Setup
 1. Create and get your app service account private key (i.e. deployment ssh keys) defined for your repo. For more info see: (https://confluence.atlassian.com/bitbucket/access-keys-294486051.html).  Name it `appkey` and place it in tmp folder.
