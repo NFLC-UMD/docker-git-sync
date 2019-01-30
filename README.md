@@ -10,11 +10,11 @@ A docker image designed as a k8 initContainer for git pull on pod initialization
 
 ## Setup
 1. Create and get your app service account private key (i.e. deployment ssh keys) defined for your repo. For more info see: (https://confluence.atlassian.com/bitbucket/access-keys-294486051.html).  Name it `appkey` and place it in tmp folder.
-2. Create `config` file. Replace `<myappId>` with the name of your app service account defined above. 
+2. Create `config` file. Replace `myappId` with the name of your app service account defined above.  Replace `example.com` with bitbucket.org, github.com or other repo where your code resides.
 ```sh
 Host example.com
     IdentityFile /root/.ssh/appkey
-    User <myappId>
+    User myappId
     StrictHostKeyChecking no
 ```
 3. Create ssh-appkey secret:
