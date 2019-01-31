@@ -56,12 +56,14 @@ find . -type d -print0 | xargs -0 chmod 775
 
 CHANGED_FILES="$(git diff-tree -r --name-only --no-commit-id HEAD@{1} HEAD)"
 
-# mount this to an empty_dir{} on the pod to cache results for the build initContainer
-cat >/git_pull_result <<EOJ
+# mount this to an empty_dir{} on the pod to cache results for doing build stuff in the next initContainer
+if [ -d "/init_git_pull" ]; then
+
+cat >/init_git_pull/result <<EOJ
 #!/bin/bash
 
 GIT_CLONED="${GIT_CLONED}"
-read -r -d '' CHANGED_FILES << EOL
+read -r -d '' CHANGED_FILES <<EOL
 ${CHANGED_FILES}
 EOL
 
@@ -71,4 +73,4 @@ check_run() {
 
 EOJ
 
-
+fi
