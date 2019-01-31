@@ -45,9 +45,30 @@ elif [ ! -d "$SYNC_DIR/.git" ]; then
   git checkout -t "origin/${GIT_REPO_BRANCH}" || die "git checkout failed"
 fi
 
+
 cd "${SYNC_DIR}"
+
 git pull origin "${GIT_REPO_BRANCH}" || die "git pull failed"
+
 chown -R 0:"${GROUP_ID:=999}" .
 chmod -R 0640 .
 find . -type d -print0 | xargs -0 chmod 775
+
+CHANGED_FILES="$(git diff-tree -r --name-only --no-commit-id HEAD@{1} HEAD)"
+
+# mount this to an empty_dir{} on the pod to cache results for the build initContainer
+cat >/git_pull_result <<EOJ
+#!/bin/bash
+
+GIT_CLONED="${GIT_CLONED}"
+read -r -d '' CHANGED_FILES << EOL
+${CHANGED_FILES}
+EOL
+
+check_run() {
+  echo "$CHANGED_FILES" | grep -E --quiet "$1" && eval "$2"
+}
+
+EOJ
+
 
