@@ -27,7 +27,7 @@ git config --global push.default simple
 
 echo "$(date -R)"
 
-if [ ! -d "$SYNC_DIR" ]; then
+if [ ! -d "${SYNC_DIR}/.git" ]; then
   echo "${SYNC_DIR} does not exist or is not a directory. Performing initial clone."
   git clone "${GIT_REPO_URL}" --branch "${GIT_REPO_BRANCH}" --single-branch "${SYNC_DIR}" || die "git clone failed"
   GIT_CLONED=1
