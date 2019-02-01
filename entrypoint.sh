@@ -33,6 +33,7 @@ if [ ! -d "${SYNC_DIR}/.git" ]; then
   # because if you run gulp build later under root account, this directory is created and owned by root
   # hence will be 403 Forbidden to nginx user
   if [ ! -z "${BUILD_DIR}" ] && [ ! -d "${SYNC_DIR}/${BUILD_DIR}"]; then
+    echo "Making directory: ${SYNC_DIR}/${BUILD_DIR}"
     mkdir "${SYNC_DIR}/${BUILD_DIR}"
   fi
 
