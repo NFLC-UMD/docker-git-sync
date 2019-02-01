@@ -30,6 +30,12 @@ echo "$(date -R)"
 if [ ! -d "${SYNC_DIR}/.git" ]; then
   echo "${SYNC_DIR} does not exist or is not a directory. Performing initial clone."
   git clone "${GIT_REPO_URL}" --branch "${GIT_REPO_BRANCH}" --single-branch "${SYNC_DIR}" || die "git clone failed"
+  # because if you run gulp build later under root account, this directory is created and owned by root
+  # hence will be 403 Forbidden to nginx user
+  if [ ! -z "${BUILD_DIR}" ] && [ ! -d "${SYNC_DIR}/${BUILD_DIR}"]; then
+    mkdir "${SYNC_DIR}/${BUILD_DIR}"
+  fi
+
   GIT_CLONED=1
 else
   cd "${SYNC_DIR}"
@@ -40,7 +46,7 @@ fi
 
 chown -R 0:"${GROUP_ID:=999}" .
 chmod -R 0640 .
-find . -type d -print0 | xargs -0 chmod 775
+find . -type d -print0 | xargs -0 chmod 755
 
 CHANGED_FILES="$(git diff-tree -r --name-only --no-commit-id HEAD@{1} HEAD)"
 
