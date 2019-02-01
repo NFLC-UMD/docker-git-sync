@@ -31,24 +31,12 @@ if [ ! -d "${SYNC_DIR}/.git" ]; then
   echo "${SYNC_DIR} does not exist or is not a directory. Performing initial clone."
   git clone "${GIT_REPO_URL}" --branch "${GIT_REPO_BRANCH}" --single-branch "${SYNC_DIR}" || die "git clone failed"
   GIT_CLONED=1
-elif [ ! -d "$SYNC_DIR/.git" ]; then
-  echo "${SYNC_DIR} exists but does not contain a git repository. Clean out all existing files and initiale local git repository before pulling remote."
-  cd "${SYNC_DIR}"; find -delete 
-
-  if [ -n "$(ls -A ${SYNC_DIR})" ]; then
-    die "${SYNC_DIR} is still not empty. 'find -delete' failed"
-  fi
-
-  git init || die "git init failed"
-  git remote add origin "${GIT_REPO_URL}" || die "git remote add failed"
-  git fetch origin "${GIT_REPO_BRANCH}" || die "git fetch failed"
-  git checkout -t "origin/${GIT_REPO_BRANCH}" || die "git checkout failed"
+else
+  cd "${SYNC_DIR}"
+  git pull origin "${GIT_REPO_BRANCH}" || die "git pull failed"
 fi
 
 
-cd "${SYNC_DIR}"
-
-git pull origin "${GIT_REPO_BRANCH}" || die "git pull failed"
 
 chown -R 0:"${GROUP_ID:=999}" .
 chmod -R 0640 .
